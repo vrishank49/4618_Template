@@ -21,6 +21,12 @@
 #include "Server.h"
 
 #include "CControl.h"
+#include "CSketch.h"
+#include "CBase4618.h"
+
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 // Must include Windows.h after Winsock2.h, so Serial must be included after Client/Server
 #include "Serial.h" 
@@ -118,7 +124,7 @@ void do_image()
   // Seed random number generator with time
   srand(time(0));
 
-  // Draw 500 circles and dots on the image
+  //Draw 500 circles and dots on the image
   for (int i = 0; i < 500; i++)
   {
     gui_position = cv::Point(10, 10);
@@ -332,6 +338,7 @@ void lab3()
    com1.init_com(comport); // initialize comport (to 5 for my case)
 
    int user_input = 0, type, channel, value, button_sel;
+
    while (1) {
       std::cout << "\n(1) - Joystick Input\n(2) - Button Input\n(3) - Button Debounce Test\n(4) - Servo Test\nPlease select an option: ";
       std::cin >> user_input;
@@ -340,8 +347,13 @@ void lab3()
       case 1: // test joystick output
          do {
             com1.get_data(ANALOG, JOY_X, value, false);
+            std::cout << "ANALOG TEST : CH" << JOY_X << " " << value << " (" << trunc(com1.get_analog(value)) << "%)\n";
             com1.get_data(ANALOG, JOY_Y, value, false);
+            std::cout << "ANALOG TEST : CH" << JOY_Y << " " << value << " (" << trunc(com1.get_analog(value)) << "%)\n";
+
             std::cout << std::endl;
+            Sleep(100);
+            //std::cout << std::endl;
          } while (!kbhit()); // why is get_data looking for result? 
                              // (answer: to store address, then do something with a pointer to get the value for the percentage)
          break;
@@ -351,12 +363,28 @@ void lab3()
             if (button_sel == 1) {
                do {
                   com1.get_data(DIGITAL, BUTTON_1, value, false);
+                  std::cout << "DIGITAL TEST : CH" << BUTTON_1 << " " << value;
+
+                  if (value == 0)
+                     com1.set_data(DIGITAL, 39, 1);
+                  else if(value == 1)
+                     com1.set_data(DIGITAL, 39, 0);
+
+                  std::cout << std::endl;
                } while (!kbhit());
             }
             else if (button_sel == 2)
             {
                do {
                   com1.get_data(DIGITAL, BUTTON_2, value, false);
+                  std::cout << "DIGITAL TEST : CH" << BUTTON_2 << " " << value;
+
+                  if (value == 0)
+                     com1.set_data(DIGITAL, 39, 1);
+                  else if (value == 1)
+                     com1.set_data(DIGITAL, 39, 0);
+
+                  std::cout << std::endl;
                } while (!kbhit());
             }
             else
@@ -366,21 +394,37 @@ void lab3()
 
          break;
       case 3: // test debounce/increment button press
-         do {
-            com1.get_button(DIGITAL, BUTTON_1);
-         } while (!kbhit());
+            std::cout << "Which button? ";
+            std::cin >> button_sel;
+            if (button_sel == 1) {
+               com1.get_button(DIGITAL, BUTTON_1);
+            }
+            else if (button_sel == 2)
+            {
+               com1.get_button(DIGITAL, BUTTON_2);
+            }
+            else
+               std::cout << "Please enter a valid button, 1 or 2.";
+            std::cout << std::endl;
          break;
       case 4: // servo test (find boundaries before gears grind)
          do {
-            for (value = 0; value < 180; value += 10)
+            for (value = 0; value < 180; value += 5)
             {
-               com1.set_data(SERVO, 19, value);
+               com1.set_data(SERVO, 0, value);
                Sleep(10);
+               //com1.delay_timer(10);
+               std::cout << "SERVO POS:CH0 = " << value << std::endl;
+               //com1.get_data(SERVO, 0, value, false);
             }
-            for (value = 180; value > 0; value -= 10)
+            for (value = 180; value > 0; value -= 5)
             {
-               com1.set_data(SERVO, 19, value);
+               com1.set_data(SERVO, 0, value);
                Sleep(10);
+               //printf("SERVO POS:CH%d", channel);
+               std::cout << "SERVO POS:CH0 = " << value << std::endl;
+               //com1.get_data(SERVO, 0, value, false);
+               //com1.delay_timer(10);
             }
          } while (!kbhit());
          break;
@@ -397,6 +441,45 @@ void lab3()
 ////////////////////////////////////////////////////////////////
 void lab4()
 {
+   cv::Mat canvas_blank, frame, edges;
+   CSketch sketch;
+   cv::Point menu, gui_position;
+   bool exit_flag = true;
+   char exit_char = 'a';
+
+   frame = cv::Mat(cv::Size(650, 150), CV_8UC3);
+   canvas_blank = cv::Mat(cv::Size(500, 500), CV_8UC3);
+
+   //sketch.run();
+
+   cvui::init("BLANK CANVAS");
+   //cvui::init("TEST EXIT");
+
+   //sketch.run();
+
+   while (exit_flag && exit_char != 'q') {
+
+      // frame = cv::Scalar(49, 52, 49);
+      //cvui::text(canvas_blank, 40, 40, "BLANK CANVAS");
+      //cv::imshow("BLANK CANVAS", canvas_blank);
+
+      cv::imshow("BLANK CANVAS", canvas_blank);
+
+      if ((cvui::button(canvas_blank, 30, 30, "Quit") == 1))
+      {
+         exit_flag = false;
+      }
+      cvui::update();
+
+      if (!kbhit()) {
+         exit_char = cv::waitKey(1);
+      }
+
+   }
+
+   cv::destroyAllWindows();
+
+   exit(0);
 }
 
 ////////////////////////////////////////////////////////////////

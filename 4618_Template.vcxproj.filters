@@ -6,6 +6,8 @@
     <ClCompile Include="server.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="CControl.cpp" />
+    <ClCompile Include="CSketch.cpp" />
+    <ClCompile Include="CBase4618.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cvui.h" />
@@ -364,5 +366,7 @@
     <ClInclude Include="opencv2\video\video.hpp" />
     <ClInclude Include="opencv2\world.hpp" />
     <ClInclude Include="CControl.h" />
+    <ClInclude Include="CSketch.h" />
+    <ClInclude Include="CBase4618.h" />
   </ItemGroup>
 </Project>
