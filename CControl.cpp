@@ -34,7 +34,7 @@ bool CControl::set_data(int type, int channel, int val)
 }
 
 
-void CControl::get_data(int type, int channel, int& result, bool debounce_check)
+void CControl::get_data(int type, int channel, int& result)
 {
    _com.flush();
    // TX and RX strings
@@ -74,20 +74,6 @@ void CControl::get_data(int type, int channel, int& result, bool debounce_check)
 
       token_ss << rx_str; // puts rx string into token_ss stringstream
 
-
-
-  /*    while (buff[0] != '\n' && (cv::getTickCount() - start_time) / cv::getTickFrequency() < 1.0)
-      {
-         if (_com.read(buff, 1) > 0)
-         {
-            rx_str = rx_str + buff[0];
-         
-         }
-      }*/
-      
-      //
-
-
       while (std::getline(token_ss, receive_token, ' ')) {
          s_buff.push_back(receive_token);
       }
@@ -95,39 +81,6 @@ void CControl::get_data(int type, int channel, int& result, bool debounce_check)
       if (s_buff.size() >= 4) {
          result = std::stoi(s_buff[3]);
       }
-
-
-      //int temp_result = std::stoi(s_buff.at(3));
-      //cv::waitKey(1);
-
-      //if (debounce_check == false) {
-
-         //if (type == 1) {
-         //  //int result_old = std::stoi(rx_str.substr(6, 7).c_str());
-         //  // printf("ANALOG TEST:CH%d", channel);
-         //  // printf(" = %s", rx_str.substr(6, 7).c_str());
-
-         //   std::cout << "ANALOG TEST : CH" << channel << " " << result << " (" << trunc(get_analog(result)) << "%)\n";
-
-         //  /// printf(" (%.1f", get_analog(result_old));
-         //   //printf("%)");
-
-         //}
-         //else if (type == 0) {
-
-         //   //int led_state = std::stoi(rx_str.substr(6));
-         //}
-         //else if (type == 2) {
-         //   std::string test = (rx_str.substr(6).c_str());
-
-         //      printf("SERVO POS:CH%d", channel);
-         //      printf(" = %s", rx_str.substr(6).c_str());
-         //   
-         //}
-     // }
-      //else 
-        // result = std::stoi(rx_str.substr(6).c_str());
-
 
       cv::waitKey(1);
 }
@@ -145,11 +98,11 @@ void CControl::get_button(int type, int channel)
          press_check = true;
       }
 
-      get_data(type, channel, previous_button_state, true); // does this sent the result (button state) to previous_button_state??????
+      get_data(type, channel, previous_button_state);
       delay_timer(10);
 
       if (press_check == true) {
-         get_data(type, channel, current_button_state, true);
+         get_data(type, channel, current_button_state);
          if ((current_button_state == 0) && (previous_button_state == 0)) {
             press_count++;
             std::cout << "Button Presses: " << press_count << std::endl;

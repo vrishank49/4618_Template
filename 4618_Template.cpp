@@ -328,7 +328,6 @@ void lab2()
 ////////////////////////////////////////////////////////////////
 void lab3()
 {
-   enum {DIGITAL = 0, ANALOG, SERVO};
    CControl com1;
 
    int comport = 5;
@@ -346,23 +345,22 @@ void lab3()
       switch (user_input) {
       case 1: // test joystick output
          do {
-            com1.get_data(ANALOG, JOY_X, value, false);
+            com1.get_data(ANALOG, JOY_X, value);
             std::cout << "ANALOG TEST : CH" << JOY_X << " " << value << " (" << trunc(com1.get_analog(value)) << "%)\n";
-            com1.get_data(ANALOG, JOY_Y, value, false);
+            com1.get_data(ANALOG, JOY_Y, value);
             std::cout << "ANALOG TEST : CH" << JOY_Y << " " << value << " (" << trunc(com1.get_analog(value)) << "%)\n";
 
             std::cout << std::endl;
-            Sleep(100);
+            cv::waitKey(50);
             //std::cout << std::endl;
-         } while (!kbhit()); // why is get_data looking for result? 
-                             // (answer: to store address, then do something with a pointer to get the value for the percentage)
+         } while (!kbhit());
          break;
       case 2: // test button press
             std::cout << "Which button? ";
             std::cin >> button_sel;
             if (button_sel == 1) {
                do {
-                  com1.get_data(DIGITAL, BUTTON_1, value, false);
+                  com1.get_data(DIGITAL, BUTTON_1, value);
                   std::cout << "DIGITAL TEST : CH" << BUTTON_1 << " " << value;
 
                   if (value == 0)
@@ -370,13 +368,14 @@ void lab3()
                   else if(value == 1)
                      com1.set_data(DIGITAL, 39, 0);
 
+                  cv::waitKey(10);
                   std::cout << std::endl;
                } while (!kbhit());
             }
             else if (button_sel == 2)
             {
                do {
-                  com1.get_data(DIGITAL, BUTTON_2, value, false);
+                  com1.get_data(DIGITAL, BUTTON_2, value);
                   std::cout << "DIGITAL TEST : CH" << BUTTON_2 << " " << value;
 
                   if (value == 0)
@@ -384,6 +383,7 @@ void lab3()
                   else if (value == 1)
                      com1.set_data(DIGITAL, 39, 0);
 
+                  cv::waitKey(10);
                   std::cout << std::endl;
                } while (!kbhit());
             }
@@ -412,19 +412,14 @@ void lab3()
             for (value = 0; value < 180; value += 5)
             {
                com1.set_data(SERVO, 0, value);
-               Sleep(10);
-               //com1.delay_timer(10);
+               cv::waitKey(10);
                std::cout << "SERVO POS:CH0 = " << value << std::endl;
-               //com1.get_data(SERVO, 0, value, false);
             }
             for (value = 180; value > 0; value -= 5)
             {
                com1.set_data(SERVO, 0, value);
-               Sleep(10);
-               //printf("SERVO POS:CH%d", channel);
+               cv::waitKey(10);
                std::cout << "SERVO POS:CH0 = " << value << std::endl;
-               //com1.get_data(SERVO, 0, value, false);
-               //com1.delay_timer(10);
             }
          } while (!kbhit());
          break;
