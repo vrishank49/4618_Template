@@ -12,6 +12,8 @@ class CControl {
 private:
    Serial _com;
    int type, channel, value;
+   int current_button_state, previous_button_state;
+   bool press_check;
 
 public:
    CControl() {
@@ -20,8 +22,8 @@ public:
    ~CControl() {}; // CControl Destructor
    void init_com(int comport);
    float get_analog(int result);
-   void get_data(int type, int channel, int& result);
+   bool get_data(int type, int channel, int& result);
    bool set_data(int type, int channel, int val);
-   void get_button(int type, int channel);
+   bool get_button(int type, int channel);
    void delay_timer(double delay);
 };

@@ -34,7 +34,7 @@ bool CControl::set_data(int type, int channel, int val)
 }
 
 
-void CControl::get_data(int type, int channel, int& result)
+bool CControl::get_data(int type, int channel, int& result)
 {
    _com.flush();
    // TX and RX strings
@@ -60,16 +60,14 @@ void CControl::get_data(int type, int channel, int& result)
 
       buff[0] = 0;
       // Read 1 byte and if an End Of Line then exit loop
-    // Timeout after 1 second, if debugging step by step this will cause you to exit the loop
+      // Timeout after 1 second, if debugging step by step this will cause you to exit the loop
 
       while (buff[0] != '\n' && (cv::getTickCount() - start_time) / cv::getTickFrequency() < 1.0)
       {
          if (_com.read(buff, 1) > 0)
          {
             rx_str = rx_str + buff[0];
-
          }
-
       }
 
       token_ss << rx_str; // puts rx string into token_ss stringstream
@@ -80,36 +78,36 @@ void CControl::get_data(int type, int channel, int& result)
 
       if (s_buff.size() >= 4) {
          result = std::stoi(s_buff[3]);
+         cv::waitKey(1);
+         return true;
       }
-
-      cv::waitKey(1);
+      else
+         return false;
 }
 
-void CControl::get_button(int type, int channel)
+bool CControl::get_button(int type, int channel)
 {
-   int current_button_state = 0, previous_button_state = 1, press_count = 0;
-   bool press_check;
+   if (previous_button_state == 1)
+   {
+      press_check = true;
+   }
 
-   std::cout << "Button Presses: 0\n";
+   get_data(type, channel, previous_button_state);
+   delay_timer(10);
 
-   do {
-      if (previous_button_state == 1)
-      {
-         press_check = true;
+   if (press_check == true) {
+
+      get_data(type, channel, current_button_state);
+
+      if ((current_button_state == 0) && (previous_button_state == 0)) {
+         press_check = false;
+         return true;
       }
-
-      get_data(type, channel, previous_button_state);
-      delay_timer(10);
-
-      if (press_check == true) {
-         get_data(type, channel, current_button_state);
-         if ((current_button_state == 0) && (previous_button_state == 0)) {
-            press_count++;
-            std::cout << "Button Presses: " << press_count << std::endl;
-            press_check = false;
-         }
-      }
-   } while (!kbhit());
+      else
+         return false;
+   }
+   else
+      return false;
 
 }
 

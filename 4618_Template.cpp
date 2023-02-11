@@ -336,7 +336,7 @@ void lab3()
 
    com1.init_com(comport); // initialize comport (to 5 for my case)
 
-   int user_input = 0, type, channel, value, button_sel;
+   int user_input = 0, type, channel, value, button_sel, press_count = 0;
 
    while (1) {
       std::cout << "\n(1) - Joystick Input\n(2) - Button Input\n(3) - Button Debounce Test\n(4) - Servo Test\nPlease select an option: ";
@@ -345,10 +345,12 @@ void lab3()
       switch (user_input) {
       case 1: // test joystick output
          do {
-            com1.get_data(ANALOG, JOY_X, value);
-            std::cout << "ANALOG TEST : CH" << JOY_X << " " << value << " (" << trunc(com1.get_analog(value)) << "%)\n";
-            com1.get_data(ANALOG, JOY_Y, value);
-            std::cout << "ANALOG TEST : CH" << JOY_Y << " " << value << " (" << trunc(com1.get_analog(value)) << "%)\n";
+            if (com1.get_data(ANALOG, JOY_X, value)) {
+               std::cout << "ANALOG TEST : CH" << JOY_X << " " << value << " (" << trunc(com1.get_analog(value)) << "%)\n";
+            }
+            if (com1.get_data(ANALOG, JOY_Y, value)) {
+               std::cout << "ANALOG TEST : CH" << JOY_Y << " " << value << " (" << trunc(com1.get_analog(value)) << "%)\n";
+            }
 
             std::cout << std::endl;
             cv::waitKey(50);
@@ -358,10 +360,11 @@ void lab3()
       case 2: // test button press
             std::cout << "Which button? ";
             std::cin >> button_sel;
-            if (button_sel == 1) {
+            if (button_sel == BUTTON_1) {
                do {
-                  com1.get_data(DIGITAL, BUTTON_1, value);
-                  std::cout << "DIGITAL TEST : CH" << BUTTON_1 << " " << value;
+                  if (com1.get_data(DIGITAL, BUTTON_1, value)) {
+                     std::cout << "DIGITAL TEST : CH" << BUTTON_1 << " " << value;
+                  }
 
                   if (value == 0)
                      com1.set_data(DIGITAL, 39, 1);
@@ -372,11 +375,12 @@ void lab3()
                   std::cout << std::endl;
                } while (!kbhit());
             }
-            else if (button_sel == 2)
+            else if (button_sel == BUTTON_2)
             {
                do {
-                  com1.get_data(DIGITAL, BUTTON_2, value);
-                  std::cout << "DIGITAL TEST : CH" << BUTTON_2 << " " << value;
+                  if (com1.get_data(DIGITAL, BUTTON_2, value)) {
+                     std::cout << "DIGITAL TEST : CH" << BUTTON_2 << " " << value;
+                  }
 
                   if (value == 0)
                      com1.set_data(DIGITAL, 39, 1);
@@ -394,14 +398,26 @@ void lab3()
 
          break;
       case 3: // test debounce/increment button press
+         press_count = 0;
             std::cout << "Which button? ";
             std::cin >> button_sel;
             if (button_sel == 1) {
-               com1.get_button(DIGITAL, BUTTON_1);
+               do {
+                  if (com1.get_button(DIGITAL, BUTTON_1)) { // check if button has been pressed on falling edge of active low signal
+                     std::cout << "Press Count = " << press_count << std::endl;
+                     press_count++;
+                  }
+               } while (!kbhit());
+               
             }
             else if (button_sel == 2)
             {
-               com1.get_button(DIGITAL, BUTTON_2);
+               do {
+                  if (com1.get_button(DIGITAL, BUTTON_2)) { // check if button has been pressed on falling edge of active low signal
+                     std::cout << "Press Count = " << press_count << std::endl;
+                     press_count++;
+                  }
+               } while (!kbhit());
             }
             else
                std::cout << "Please enter a valid button, 1 or 2.";
