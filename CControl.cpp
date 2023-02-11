@@ -30,7 +30,8 @@ bool CControl::set_data(int type, int channel, int val)
    // com write to servo
    // return true if it sent properly, false if it didn't send
    _com.write(tx_str.c_str(), tx_str.length());
-   return false;
+
+   return true;
 }
 
 

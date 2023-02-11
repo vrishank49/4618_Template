@@ -398,7 +398,7 @@ void lab3()
 
          break;
       case 3: // test debounce/increment button press
-         press_count = 0;
+         press_count = 1;
             std::cout << "Which button? ";
             std::cin >> button_sel;
             if (button_sel == 1) {
