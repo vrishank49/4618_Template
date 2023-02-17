@@ -8,19 +8,19 @@
 CSketch::CSketch(int comport, cv::Point canvas_size) { // constructor - takes size object (for frame size), and initializes CControl COM port
    _sketchcontrol.init_com(comport); // initialize comport 5 for CControl object
 
-   canvas = cv::Mat::zeros(canvas_size.x, canvas_size.y, CV_8UC3); // define parameters (sizing) for canvas and color
+  _base_canvas= cv::Mat::zeros(canvas_size.x, canvas_size.y, CV_8UC3); // define parameters (sizing) for canvas and color
    _point_old = cv::Point(canvas_size.x/2, canvas_size.y/2);
    _point_new = cv::Point(canvas_size.x / 2, canvas_size.y / 2);
    _canvascolor = cv::Scalar(255,0,0);
 
-   _reset = false;
+   cvui::init("Etch-a-Sketch by Vrishank");
+   cv::imshow("Etch-a-Sketch by Vrishank", _base_canvas); // initialize and display canvas
+
+   _resetflag = false; // initialize variables for debounce, reset and color change
    _colorchange = false;
    _colorselect = 0;
-
-   cv::imshow("Etch-a-Sketch by Vrishank", canvas); // initialize canvas
-   
-   // TODO initialize LED colors (maybe I can do this in another spot outside of the constructor?
-   // TODO create cursor
+   _colorflag = 0;
+   debounce = false;
 }
 
 // TODO where does this go?
@@ -63,117 +63,81 @@ CSketch::CSketch(int comport, cv::Point canvas_size) { // constructor - takes si
 void CSketch::update()
 {
    _point_old = _point_new;
-   int x_axis, y_axis;
 
    _sketchcontrol.get_data(ANALOG, JOY_X, x_axis);
-   x_axis = (_sketchcontrol.get_analog(x_axis)*CANVAS_SIZE_X/100*1.5) - 127 ; // x axis position
+   x_axis = (_sketchcontrol.get_analog(x_axis)*CANVAS_SIZE_X/100*1.5) - 127 ; // x axis position, scaled and moved over to fit within screen
 
-
-   if (x_axis < 0)
+   if (x_axis < 0) // x boundaries
       x_axis = 0;
    else if (x_axis > 500)
       x_axis = 499;
-
-   std::cout << "X AXIS: " << x_axis << std::endl;
     
    _sketchcontrol.get_data(ANALOG, JOY_Y, y_axis);
-   y_axis = (CANVAS_SIZE_Y*1.5) - _sketchcontrol.get_analog(y_axis)*CANVAS_SIZE_Y/100*1.5 - 122; // y axis position
+   y_axis = (CANVAS_SIZE_Y*1.5) - _sketchcontrol.get_analog(y_axis)*CANVAS_SIZE_Y/100*1.5 - 122; // y axis position (similar to x_axis parameters)
 
-   if (y_axis < 0)
+   if (y_axis < 0) // y boundaries
       y_axis = 0;
    else if (y_axis > 500)
       y_axis = 499;
 
-   std::cout << "Y AXIS: " << y_axis << std::endl;
-
    _point_new = cv::Point(x_axis, y_axis);
 
-
-   //if ((cvui::button(canvas, 50, 15, "Reset") == 1))
-   //{
-   //   _reset = true;
-   //}
-   //cvui::update();
-
-
-   if (_sketchcontrol.get_button(DIGITAL, BUTTON_1))
-      _reset = true;
+   if (_sketchcontrol.get_button(DIGITAL, BUTTON_1) || (cvui::button(_base_canvas, 50, 20, "Reset") == 1)) // reset if button is pressed on microcontroller or GUI
+      _resetflag = true;
    else
-      _reset = false;
+      _resetflag = false;
 
-   if (_sketchcontrol.get_button(DIGITAL, BUTTON_2))
-      _colorchange = true;
-   else
-      _colorchange = false;
+   _sketchcontrol.get_data(DIGITAL, BUTTON_2, _colorflag); // check if button is pressed on microcontroller for color change
 
-   //cv::waitKey(1);
+   if (!debounce && !_colorflag) {
 
-   // else
-   //  _colorchange = false;
+      if (_colorflag == 0)
+         _colorselect++;
 
-   // _reset = _sketchcontrol.get_button(DIGITAL, BUTTON_1);
-
-   // _colorchange = _sketchcontrol.get_button(DIGITAL, BUTTON_2);
-
-   if (_colorchange)
-      _colorselect++;
-
-   if (_colorselect == 3) // if it increments past the red color go back to blue
-      _colorselect = 0;
+      if (_colorselect == 3) // if it increments past the green color go back to blue
+         _colorselect = 0;
 
       switch (_colorselect) {
-      case 0:
-         _canvascolor = cv::Scalar(255, 0, 0);
-         _sketchcontrol.set_data(DIGITAL, BLUE_LED, 1);
-         _sketchcontrol.set_data(DIGITAL, RED_LED, 0);
-         _sketchcontrol.set_data(DIGITAL, GREEN_LED, 0);
-         _colorchange = false;
-         break;
-      case 1:
-         _canvascolor = cv::Scalar(0, 255, 0);
-         _sketchcontrol.set_data(DIGITAL, BLUE_LED, 0);
-         _sketchcontrol.set_data(DIGITAL, RED_LED, 1);
-         _sketchcontrol.set_data(DIGITAL, GREEN_LED, 0);
-         _colorchange = false;
-         break;
-      case 2:
-         _canvascolor = cv::Scalar(0, 0, 255);
-         _sketchcontrol.set_data(DIGITAL, BLUE_LED, 0);
-         _sketchcontrol.set_data(DIGITAL, RED_LED, 0);
-         _sketchcontrol.set_data(DIGITAL, GREEN_LED, 1);
-         _colorchange = false;
-         break;
+         case 0: // BLUE
+            _canvascolor = cv::Scalar(255, 0, 0);
+            _sketchcontrol.set_data(DIGITAL, BLUE_LED, 1);
+            _sketchcontrol.set_data(DIGITAL, RED_LED, 0);
+            _sketchcontrol.set_data(DIGITAL, GREEN_LED, 0);
+            break;
+         case 1: // RED
+            _canvascolor = cv::Scalar(0, 255, 0);
+            _sketchcontrol.set_data(DIGITAL, BLUE_LED, 0);
+            _sketchcontrol.set_data(DIGITAL, RED_LED, 1);
+            _sketchcontrol.set_data(DIGITAL, GREEN_LED, 0);
+            break;
+         case 2: // GREEN
+            _canvascolor = cv::Scalar(0, 0, 255);
+            _sketchcontrol.set_data(DIGITAL, BLUE_LED, 0);
+            _sketchcontrol.set_data(DIGITAL, RED_LED, 0);
+            _sketchcontrol.set_data(DIGITAL, GREEN_LED, 1);
+            break;
       }
 
-   // update internal variables
-   // -> read data from CControl & perform calculations
-   // getanalog to get joystick position
-   // button debounce for reset
-   // 
-   // -> use get_analog to get X/Y positions as percentages, and multiply by canvas size for coords
+      debounce = true;
+   }
 
-   // if button is pressed, change color
-   // use debounce in CControl to check if the button press counter has incremented to initiate a color change
-   // check here for _reset flag
-
+   if (_colorflag && debounce)
+      debounce = false;
 }
 
 void CSketch::draw()
 {
-  // cv::Mat canvas_blank, frame, edges;
-  // do all drawing on the Mat image data type
-   cv::line(canvas, _point_new, _point_old, _canvascolor, 1, cv::LINE_AA);
+   cv::line(_base_canvas, _point_new, _point_old, _canvascolor, 1, cv::LINE_AA); // draw a little line between the old and new point (between joystick inputs)
 
-   if (_reset == true)
+   if ((cvui::button(_base_canvas, 50, 20, "Reset") == 1)) // enable reset flag if GUI button is pressed
+      _resetflag = true;
+
+   if (_resetflag == true)
    {
-      canvas = cv::Mat::zeros(CANVAS_SIZE_X, CANVAS_SIZE_Y, CV_8UC3);
+     _base_canvas= cv::Mat::zeros(CANVAS_SIZE_X, CANVAS_SIZE_Y, CV_8UC3);  // clear screen if reset flag 
    }
    
-   // display image on screen
-   // use imshow to display canvas
-   // add GUI exit button to close program
+   _resetflag = false; // reset the reset flag (lol)
 
-
-   // when color changes, on GUI indicate what color it has changed to
-   // check here for _reset flag
+   cv::imshow("Etch-a-Sketch by Vrishank", _base_canvas); // update image
 }

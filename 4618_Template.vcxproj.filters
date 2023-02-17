@@ -8,6 +8,7 @@
     <ClCompile Include="CControl.cpp" />
     <ClCompile Include="CSketch.cpp" />
     <ClCompile Include="CBase4618.cpp" />
+    <ClCompile Include="CPong.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cvui.h" />
@@ -368,5 +369,6 @@
     <ClInclude Include="CControl.h" />
     <ClInclude Include="CSketch.h" />
     <ClInclude Include="CBase4618.h" />
+    <ClInclude Include="CPong.h" />
   </ItemGroup>
 </Project>

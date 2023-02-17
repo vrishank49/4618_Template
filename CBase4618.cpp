@@ -3,45 +3,34 @@
 #include "cvui.h"
 #include <conio.h>
 
+/**
+ * @brief Runs the base of the program.
+ *
+ * This function runs the main loop of the program until the user clicks on the "Quit" button or presses the 'q' key.
+ */
 void CBase4618::run()
 {
    bool exit_flag = true;
    char exit_char = 'a';
-   
-   //canvas_blank = cv::mat(cv::size(500, 500), cv_8uc3);
-   
-   //sketch.run();
-   
-   cvui::init("Etch-a-Sketch by Vrishank");
-   //cvui::init("test exit");
-   
-   //sketch.run();
-   
-   while (exit_flag && exit_char != 'q') {
-   
-      //cvui::text(canvas, 50, 50, "quit");
-      //cv::imshow("blank canvas", canvas_blank);
 
-      cv::imshow("Etch-a-Sketch by Vrishank", canvas); // todo: is this line ok? button doesn't display if i don't include it.
-   
-      if ((cvui::button(canvas, 50, 50, "Quit") == 1))
+   while (exit_flag && exit_char != 'q') { // loop when exit conditions are not met
+
+      if ((cvui::button(_base_canvas, 50, 50, "Quit") == 1)) // display and check Quit button
       {
          exit_flag = false;
       }
-   
+
       cvui::update();
-   
-      if (!kbhit()) {
+
+      if (!kbhit()) { // check for button press
          exit_char = cv::waitKey(1);
       }
 
       update();
       draw();
-   
    }
-   
-   cv::destroyAllWindows();
-   
-   exit(0);
 
+   cv::destroyAllWindows();
+
+   exit(0);
 }

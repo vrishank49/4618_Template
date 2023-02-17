@@ -79,7 +79,6 @@ bool CControl::get_data(int type, int channel, int& result)
 
       if (s_buff.size() >= 4) {
          result = std::stoi(s_buff[3]);
-         //cv::waitKey(1);
          return true;
       }
       else
@@ -94,7 +93,6 @@ bool CControl::get_button(int type, int channel)
    }
 
    get_data(type, channel, previous_button_state);
-   //delay_timer(10);
    cv::waitKey(1);
 
    if (press_check == true) {
@@ -110,15 +108,5 @@ bool CControl::get_button(int type, int channel)
    }
    else
       return false;
-
-}
-
-void CControl::delay_timer(double delay)
-{
-   double start_time = cv::getTickCount(), current_time = 0, period;
-
-   while (delay > start_time) {
-      current_time = (1000 * (cv::getTickCount() - start_time) / cv::getTickFrequency());
-   }
 
 }

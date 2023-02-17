@@ -4,25 +4,45 @@
 #define CANVAS_SIZE_X 500
 #define CANVAS_SIZE_Y 500
 
-class CSketch : public CBase4618
-{
+/**
+ * @brief CSketch is a class that inherits from CBase4618 and provides an implementation
+ * of the game Etch-a-Sketch.
+ */
+class CSketch : public CBase4618 {
 private:
-   CControl _sketchcontrol;
-   cv::Point _point_old, _point_new;
-   cv::Point _canvas;
-   cv::Scalar _canvascolor;
-   bool _reset;
-   bool _colorchange;
-   int _colorselect;
+   CControl _sketchcontrol; ///< instance of CControl class
+   cv::Point _point_old; ///< previous point in canvas
+   cv::Point _point_new; ///< new point in canvas
+   cv::Point _canvas; ///< canvas point
+   cv::Scalar _canvascolor; ///< color of canvas
+   bool _resetflag, debounce; ///< reset flag for canvas
+   bool _colorchange; ///< color change flag
+   int _colorselect, _colorflag, x_axis, y_axis; ///< selected colors, flags and intermediate axis variables
 
 public:
-   CSketch(int, cv::Point);
+   /**
+    * @brief Construct a new CSketch object
+    *
+    * @param comport COM port
+    * @param canvas_size decide frame size
+    */
+   CSketch(int comport, cv::Point canvas_size);
+
+   /**
+    * @brief Destroy the CSketch object
+    *
+    */
    ~CSketch() {};
 
-   // 
-
+   /**
+    * @brief update the canvas
+    *
+    */
    void update();
+
+   /**
+    * @brief draw on the canvas
+    *
+    */
    void draw();
-
 };
-
