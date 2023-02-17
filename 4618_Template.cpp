@@ -452,45 +452,9 @@ void lab3()
 ////////////////////////////////////////////////////////////////
 void lab4()
 {
-   cv::Mat canvas_blank, frame, edges;
-   CSketch sketch;
-   cv::Point menu, gui_position;
-   bool exit_flag = true;
-   char exit_char = 'a';
-
-   frame = cv::Mat(cv::Size(650, 150), CV_8UC3);
-   canvas_blank = cv::Mat(cv::Size(500, 500), CV_8UC3);
-
-   //sketch.run();
-
-   cvui::init("BLANK CANVAS");
-   //cvui::init("TEST EXIT");
-
-   //sketch.run();
-
-   while (exit_flag && exit_char != 'q') {
-
-      // frame = cv::Scalar(49, 52, 49);
-      //cvui::text(canvas_blank, 40, 40, "BLANK CANVAS");
-      //cv::imshow("BLANK CANVAS", canvas_blank);
-
-      cv::imshow("BLANK CANVAS", canvas_blank);
-
-      if ((cvui::button(canvas_blank, 30, 30, "Quit") == 1))
-      {
-         exit_flag = false;
-      }
-      cvui::update();
-
-      if (!kbhit()) {
-         exit_char = cv::waitKey(1);
-      }
-
-   }
-
-   cv::destroyAllWindows();
-
-   exit(0);
+   cv::Point canvas_size = cv::Point(CANVAS_SIZE_X, CANVAS_SIZE_Y); // decide how big to make the canvas by defining a cv::Point variable
+   CSketch sketch(COM5, canvas_size); // construct CSketch with given parameters
+   sketch.run();  // run created sketch object
 }
 
 ////////////////////////////////////////////////////////////////

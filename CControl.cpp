@@ -79,7 +79,7 @@ bool CControl::get_data(int type, int channel, int& result)
 
       if (s_buff.size() >= 4) {
          result = std::stoi(s_buff[3]);
-         cv::waitKey(1);
+         //cv::waitKey(1);
          return true;
       }
       else
@@ -94,7 +94,8 @@ bool CControl::get_button(int type, int channel)
    }
 
    get_data(type, channel, previous_button_state);
-   delay_timer(10);
+   //delay_timer(10);
+   cv::waitKey(1);
 
    if (press_check == true) {
 
