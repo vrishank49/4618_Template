@@ -1,8 +1,10 @@
 #pragma once
 #include "CBase4618.h"
 
-#define PONG_CANVAS_SIZE_X 800
-#define PONG_CANVAS_SIZE_Y 1000
+#define PONG_CANVAS_SIZE_X 1000
+#define PONG_CANVAS_SIZE_Y 800
+
+#define PONG_TITLE "Pong by Vrishank"
 
 /**
  * @brief CPong is a class that inherits from CBase4618 and provides an implementation
@@ -12,15 +14,24 @@ class CPong :
    public CBase4618
 {
 private:
-   cv::Mat tempframe; /**< A temporary cv::Mat object to hold frames */
    CControl _pongcontrol; /**< An object of CControl to read control inputs */
-   cv::Point _pong_canvas, ball_center; /**< A cv::Point object to hold canvas coordinates */
+   cv::Point _pong_canvas, ball, ball_direction; /**< A cv::Point object to hold canvas coordinates and ball position */
    int ballsize; /**< The size of the ball */
    int ballspeed; /**< The speed of the ball */
-   int _paddlepos_y_new; /**< The new position of the paddle */
-   int _paddlepos_y_old; /**< The old position of the paddle */
+   int _player_paddle_pos_new; /**< The new position of the paddle */
+   int _player_paddle_pos_old; /**< The old position of the paddle */
 
-   cv::Rect paddle_dim, paddle2_dim; /**< A cv::Rect object to hold paddle dimensions */
+   int _winreset;
+
+   int _playerscore, _botscore;
+
+   double _current_time, _delta_time, _prev_time;
+   double frequency, fps, initialframe;
+
+   bool _resetflag;
+
+
+   cv::Rect _player_paddle_dim, _bot_paddle_dim; /**< A cv::Rect object to hold paddle dimensions */
    cv::Scalar _white; /**< A cv::Scalar object to hold white color values */
 
 public:
@@ -29,7 +40,7 @@ public:
     * @param webcam_index Index of the webcam to use.
     * @param pong_canvas A cv::Point object to hold canvas coordinates.
     */
-   CPong(int comport, cv::Point pong_canvas_size);
+   CPong(int comport);
 
    ~CPong() {};
 

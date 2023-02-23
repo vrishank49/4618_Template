@@ -13,9 +13,14 @@
 class CBase4618 {
 private:
    CControl control; /**< CControl object for handling serial communication. */
+   bool exit_flag;
+   char exit_char;
 
 public:
    cv::Mat _base_canvas; /**< OpenCV Mat object for drawing. */
+
+   CBase4618();
+   ~CBase4618();
 
    /**
     * @brief Starts the program execution.

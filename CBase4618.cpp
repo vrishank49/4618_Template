@@ -8,12 +8,16 @@
  *
  * This function runs the main loop of the program until the user clicks on the "Quit" button or presses the 'q' key.
  */
+
+CBase4618::CBase4618() {
+   exit_flag = true;
+   exit_char = 'a'; // not important what character this is, just for intializing
+}
+
 void CBase4618::run()
 {
-   bool exit_flag = true;
-   char exit_char = 'a';
 
-   while (exit_flag && exit_char != 'q') { // loop when exit conditions are not met
+   do { // loop when exit conditions are not met
 
       if ((cvui::button(_base_canvas, 50, 50, "Quit") == 1)) // display and check Quit button
       {
@@ -28,9 +32,11 @@ void CBase4618::run()
 
       update();
       draw();
-   }
+   } while (exit_flag && exit_char != 'q');
 
+}
+
+CBase4618::~CBase4618() {
    cv::destroyAllWindows();
-
    exit(0);
 }

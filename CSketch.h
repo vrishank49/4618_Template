@@ -4,6 +4,8 @@
 #define CANVAS_SIZE_X 500
 #define CANVAS_SIZE_Y 500
 
+#define ETCH_TITLE "Etch-a-Sketch by Vrishank"
+
 /**
  * @brief CSketch is a class that inherits from CBase4618 and provides an implementation
  * of the game Etch-a-Sketch.

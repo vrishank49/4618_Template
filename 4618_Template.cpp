@@ -463,8 +463,8 @@ void lab4()
 ////////////////////////////////////////////////////////////////
 void lab5()
 {
-   cv::Point pong_canvas_size = cv::Point(PONG_CANVAS_SIZE_X, PONG_CANVAS_SIZE_Y); // decide how big to make the canvas by defining a cv::Point variable
-   CPong pong(COM5, pong_canvas_size); // construct CSketch with given parameters
+   //cv::Point pong_canvas_size = cv::Point(PONG_CANVAS_SIZE_X, PONG_CANVAS_SIZE_Y); // decide how big to make the canvas by defining a cv::Point variable
+   CPong pong(COM5); // construct CSketch with given parameters
    pong.run();  // run created sketch object
 }
 

@@ -13,8 +13,8 @@ CSketch::CSketch(int comport, cv::Point canvas_size) { // constructor - takes si
    _point_new = cv::Point(canvas_size.x / 2, canvas_size.y / 2);
    _canvascolor = cv::Scalar(255,0,0);
 
-   cvui::init("Etch-a-Sketch by Vrishank");
-   cv::imshow("Etch-a-Sketch by Vrishank", _base_canvas); // initialize and display canvas
+   cvui::init(ETCH_TITLE);
+   cv::imshow(ETCH_TITLE, _base_canvas); // initialize and display canvas
 
    _resetflag = false; // initialize variables for debounce, reset and color change
    _colorchange = false;
@@ -32,7 +32,7 @@ CSketch::CSketch(int comport, cv::Point canvas_size) { // constructor - takes si
 //
 ////sketch.run();
 //
-//cvui::init("Etch-a-Sketch by Vrishank");
+//cvui::init(ETCH_TITLE);
 ////cvui::init("TEST EXIT");
 //
 ////sketch.run();
@@ -41,7 +41,7 @@ CSketch::CSketch(int comport, cv::Point canvas_size) { // constructor - takes si
 //
 //   //cvui::text(canvas, 50, 50, "Quit");
 //   //cv::imshow("BLANK CANVAS", canvas_blank);
-//   cv::imshow("Etch-a-Sketch by Vrishank", canvas); // TODO: is this line OK? button doesn't display if I don't include it.
+//   cv::imshow(ETCH_TITLE, canvas); // TODO: is this line OK? button doesn't display if I don't include it.
 //
 //   if ((cvui::button(canvas, 50, 50, "Quit") == 1))
 //   {
@@ -139,5 +139,5 @@ void CSketch::draw()
    
    _resetflag = false; // reset the reset flag (lol)
 
-   cv::imshow("Etch-a-Sketch by Vrishank", _base_canvas); // update image
+   cv::imshow(ETCH_TITLE, _base_canvas); // update image
 }
