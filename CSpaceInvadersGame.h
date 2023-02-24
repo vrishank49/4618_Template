@@ -9,10 +9,10 @@
 #define SPACEINVADERS_CANVAS_SIZE_X 700
 #define SPACEINVADERS_CANVAS_SIZE_Y 700
 
-#define WHITE cv::Scalar(0,0,0)
+#define WHITE cv::Scalar(255, 255, 255)
 
-#define POS_VELOCITY cv::Point2f(10,0)
-#define NEG_VELOCITY cv::Point2f(-10,0)
+#define POS_VELOCITY cv::Point2f(500,0)
+#define NEG_VELOCITY cv::Point2f(-500,0)
 #define ZERO_VELOCITY cv::Point2f(0,0)
 
 class CSpaceInvadersGame :
@@ -24,18 +24,18 @@ private:
    int _resetcount, _firecount;
    bool _debounce_fire, _debounce_reset;
 
-   int _joy_input_old, _joy_input_new, _joy_input_raw;
+   int _joy_input_raw;
    double _joy_perc;
 
+   int _invader_row;
+   cv::Point2f _invader_velocity;
 
 public:
    CShip _ship;
+   CInvader _tempinvader;
+   CMissile _tempmissile;
    std::vector<CInvader> _invader_vector;
    std::vector<CMissile> _missile_vector;
-
-   cv::Point2f ShipVelocity;
-
-   double _t_current, _t_prev, _t_delta; // timing
 
    CSpaceInvadersGame(int comport);
 

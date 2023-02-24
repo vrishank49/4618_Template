@@ -456,7 +456,7 @@ void lab3()
 void lab4()
 {
    cv::Point canvas_size = cv::Point(CANVAS_SIZE_X, CANVAS_SIZE_Y); // decide how big to make the canvas by defining a cv::Point variable
-   CSketch sketch(COM5, canvas_size); // construct CSketch with given parameters
+   CSketch sketch(COM9, canvas_size); // construct CSketch with given parameters
    sketch.run();  // run created sketch object
 }
 

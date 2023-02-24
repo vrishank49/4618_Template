@@ -1,14 +1,19 @@
 #include "stdafx.h"
 #include "CGameObject.h"
 
-void CGameObject::move()
+CGameObject::CGameObject()
 {
-   _position = _position + _velocity * ((cv::getTickCount() - _t_prev) / cv::getTickFrequency());
    _t_prev = cv::getTickCount();
 }
 
-void CGameObject::draw(cv::Mat& im, cv::Scalar color)
+void CGameObject::move()
 {
-   //cv::rectangle(im, _position, cv::Point2f(_position.x + _shape.width, _position.y + _shape.height), color, cv::FILLED, cv::LINE_AA);
-   cv::circle(im, _position, 10, color, cv::FILLED, cv::LINE_AA);
+   _t_current = cv::getTickCount();
+   _position = _position + _velocity * ((_t_current - _t_prev) / cv::getTickFrequency());
+   _t_prev = _t_current;
+}
+
+void CGameObject::draw(cv::Mat& canvas, cv::Scalar color)
+{
+   cv::rectangle(canvas, _position, cv::Point2f(_position.x + _shape.width, _position.y + _shape.height), color, cv::FILLED, cv::LINE_AA);
 }
