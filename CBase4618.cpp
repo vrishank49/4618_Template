@@ -12,6 +12,7 @@
 CBase4618::CBase4618() {
    exit_flag = true;
    exit_char = 'a'; // not important what character this is, just for intializing
+
 }
 
 void CBase4618::run()
@@ -19,19 +20,15 @@ void CBase4618::run()
 
    do { // loop when exit conditions are not met
 
-      if ((cvui::button(_base_canvas, 50, 50, "Quit") == 1)) // display and check Quit button
-      {
-         exit_flag = false;
-      }
-
-      cvui::update();
-
       if (!kbhit()) { // check for button press
          exit_char = cv::waitKey(1);
       }
 
       update();
       draw();
+
+      cvui::update();
+
    } while (exit_flag && exit_char != 'q');
 
 }

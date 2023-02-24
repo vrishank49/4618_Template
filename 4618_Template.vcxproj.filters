@@ -9,6 +9,8 @@
     <ClCompile Include="CSketch.cpp" />
     <ClCompile Include="CBase4618.cpp" />
     <ClCompile Include="CPong.cpp" />
+    <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CShip.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cvui.h" />
@@ -370,5 +372,7 @@
     <ClInclude Include="CSketch.h" />
     <ClInclude Include="CBase4618.h" />
     <ClInclude Include="CPong.h" />
+    <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CShip.h" />
   </ItemGroup>
 </Project>

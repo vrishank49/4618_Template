@@ -1,8 +1,10 @@
 #pragma once
 #include "CBase4618.h"
 
-#define PONG_CANVAS_SIZE_X 1000
-#define PONG_CANVAS_SIZE_Y 800
+#define PONG_CANVAS_SIZE_X 800
+#define PONG_CANVAS_SIZE_Y 600
+#define BUTTON_WIDTH 100
+#define BUTTON_HEIGHT 30
 
 #define PONG_TITLE "Pong by Vrishank"
 

@@ -10,13 +10,13 @@
  * serial communication. It also has a virtual update() and draw() method which can
  * be implemented differently by child classes.
  */
-class CBase4618 {
+//class CBase4618 {
 private:
    CControl control; /**< CControl object for handling serial communication. */
-   bool exit_flag;
    char exit_char;
 
 public:
+   bool exit_flag;
    cv::Mat _base_canvas; /**< OpenCV Mat object for drawing. */
 
    CBase4618();
