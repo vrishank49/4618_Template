@@ -24,6 +24,8 @@
 #include "CSketch.h"
 #include "CPong.h"
 #include "CBase4618.h"
+#include "CSpaceInvadersGame.h"
+#include "CGameObject.h"
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -464,7 +466,7 @@ void lab4()
 void lab5()
 {
    //cv::Point pong_canvas_size = cv::Point(PONG_CANVAS_SIZE_X, PONG_CANVAS_SIZE_Y); // decide how big to make the canvas by defining a cv::Point variable
-   CPong pong(COM5); // construct CSketch with given parameters
+   CPong pong(COM9); // construct CSketch with given parameters
    pong.run();  // run created sketch object
 }
 
@@ -473,6 +475,8 @@ void lab5()
 ////////////////////////////////////////////////////////////////
 void lab6()
 {
+   CSpaceInvadersGame spaceinvaders(COM9);
+   spaceinvaders.run();
 }
 
 void print_menu()

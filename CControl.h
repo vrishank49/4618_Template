@@ -45,6 +45,7 @@
          * @brief COM port for communication.
          */
 #define COM5 5
+#define COM9 9
 
          /**
           * @brief Enumeration of possible data types.

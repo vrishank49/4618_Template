@@ -11,6 +11,9 @@
     <ClCompile Include="CPong.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CShip.cpp" />
+    <ClCompile Include="CSpaceInvadersGame.cpp" />
+    <ClCompile Include="CMissile.cpp" />
+    <ClCompile Include="CInvader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cvui.h" />
@@ -374,5 +377,8 @@
     <ClInclude Include="CPong.h" />
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CShip.h" />
+    <ClInclude Include="CSpaceInvadersGame.h" />
+    <ClInclude Include="CMissile.h" />
+    <ClInclude Include="CInvader.h" />
   </ItemGroup>
 </Project>

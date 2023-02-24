@@ -92,9 +92,12 @@
     <ClInclude Include="CBase4618.h" />
     <ClInclude Include="CControl.h" />
     <ClInclude Include="CGameObject.h" />
+    <ClInclude Include="CInvader.h" />
+    <ClInclude Include="CMissile.h" />
     <ClInclude Include="CPong.h" />
     <ClInclude Include="CShip.h" />
     <ClInclude Include="CSketch.h" />
+    <ClInclude Include="CSpaceInvadersGame.h" />
     <ClInclude Include="cvui.h" />
     <ClInclude Include="opencv2\aruco.hpp" />
     <ClInclude Include="opencv2\aruco\charuco.hpp" />
@@ -456,9 +459,12 @@
     <ClCompile Include="CBase4618.cpp" />
     <ClCompile Include="CControl.cpp" />
     <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CInvader.cpp" />
+    <ClCompile Include="CMissile.cpp" />
     <ClCompile Include="CPong.cpp" />
     <ClCompile Include="CShip.cpp" />
     <ClCompile Include="CSketch.cpp" />
+    <ClCompile Include="CSpaceInvadersGame.cpp" />
     <ClCompile Include="Serial.cpp" />
     <ClCompile Include="server.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -10,7 +10,7 @@
  * serial communication. It also has a virtual update() and draw() method which can
  * be implemented differently by child classes.
  */
-//class CBase4618 {
+class CBase4618 {
 private:
    CControl control; /**< CControl object for handling serial communication. */
    char exit_char;
