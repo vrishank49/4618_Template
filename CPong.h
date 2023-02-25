@@ -16,25 +16,33 @@ class CPong :
    public CBase4618
 {
 private:
-   CControl _pongcontrol; /**< An object of CControl to read control inputs */
-   cv::Point _pong_canvas, ball, ball_direction; /**< A cv::Point object to hold canvas coordinates and ball position */
-   int ballsize; /**< The size of the ball */
-   int ballspeed; /**< The speed of the ball */
-   int _player_paddle_pos_new; /**< The new position of the paddle */
-   int _player_paddle_pos_old; /**< The old position of the paddle */
+   CControl _pongcontrol; ///< An object of CControl to read control inputs
+   cv::Point _pong_canvas; ///< A cv::Point object to hold canvas coordinates
+   cv::Point ball; ///< A cv::Point object to hold ball position
+   cv::Point ball_direction; ///< A cv::Point object to hold ball direction
+   int ballsize; ///< The radius of the ball
+   int ballspeed; ///< The speed of the ball
+   int _player_paddle_pos_new; ///< The new position of the paddle
+   int _player_paddle_pos_old; ///< The old position of the paddle
 
-   int _winreset;
+   int _winreset; ///< Flag to reset when game is won
 
-   int _playerscore, _botscore;
+   int _playerscore; ///< Player score
+   int _botscore; ///< Bot score
 
-   double _current_time, _delta_time, _prev_time;
-   double frequency, fps, initialframe;
+   double _current_time; ///< Current time
+   double _delta_time; ///< Change in time
+   double _prev_time; ///< Previous time
+   double frequency; ///< Frequency (Tick / Ticks per second)
+   double fps; ///< Frames per second
+   double initialframe; ///< Initial frame holder
 
-   bool _resetflag;
+   bool _resetflag; ///< Flag for reset check
 
 
-   cv::Rect _player_paddle_dim, _bot_paddle_dim; /**< A cv::Rect object to hold paddle dimensions */
-   cv::Scalar _white; /**< A cv::Scalar object to hold white color values */
+   cv::Rect _player_paddle_dim; ///< A cv::Rect object to hold player paddle dimensions
+   cv::Rect _bot_paddle_dim; ///< A cv::Rect object to hold bot paddle dimensions
+   cv::Scalar _white; ///< A cv::Scalar object to hold white color values
 
 public:
    /**

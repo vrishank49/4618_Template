@@ -5,11 +5,15 @@
 #include "CInvader.h"
 #include "CMissile.h"
 
+#include <vector>
+#include <iostream>
+
 #define SPACEINVADERS_TITLE "Space Invaders by Vrishank"
-#define SPACEINVADERS_CANVAS_SIZE_X 700
-#define SPACEINVADERS_CANVAS_SIZE_Y 700
+#define SPACEINVADERS_CANVAS_SIZE_X 400
+#define SPACEINVADERS_CANVAS_SIZE_Y 400
 
 #define WHITE cv::Scalar(255, 255, 255)
+#define RED cv::Scalar(0, 0, 255, 255)
 
 #define POS_VELOCITY cv::Point2f(500,0)
 #define NEG_VELOCITY cv::Point2f(-500,0)
@@ -21,7 +25,7 @@ class CSpaceInvadersGame :
 private:
    CControl _invaderscontrol;
    cv::Mat _spaceinvaders_canvas;
-   int _resetcount, _firecount;
+   int _resetcount, _fireflag, _firecount, _scorecount;
    bool _debounce_fire, _debounce_reset;
 
    int _joy_input_raw;
@@ -51,8 +55,8 @@ public:
     */
    void draw();
 
-   void button_input(); //< Encapsulates all button input (S1&S2 on launchpad) in update() for simplicity.
+   void button_input(); // Encapsulates all button input (S1&S2 on launchpad) in update() for simplicity.
 
-   void init();
+   void init(); // initialize game state with starting locations and objects
 };
 

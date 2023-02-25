@@ -65,16 +65,20 @@ void CSketch::update()
    _point_old = _point_new;
 
    _sketchcontrol.get_data(ANALOG, JOY_X, x_axis);
-   x_axis = (_sketchcontrol.get_analog(x_axis)*CANVAS_SIZE_X/100*1.5) - 127 ; // x axis position, scaled and moved over to fit within screen
+   x_axis = (_sketchcontrol.get_analog(x_axis)*CANVAS_SIZE_X/100*1.5) - 127; // x axis position, scaled and moved over to fit within screen
+   //x_axis = (( x_axis / 4096 * CANVAS_SIZE_X * 1.5 * 1000) - 127*1000);
 
    if (x_axis < 0) // x boundaries
+      //std::cout << x_axis << std::endl;
       x_axis = 0;
    else if (x_axis > 500)
       x_axis = 499;
+
+   //std::cout << x_axis << std::endl;
     
    _sketchcontrol.get_data(ANALOG, JOY_Y, y_axis);
    y_axis = (CANVAS_SIZE_Y*1.5) - _sketchcontrol.get_analog(y_axis)*CANVAS_SIZE_Y/100*1.5 - 122; // y axis position (similar to x_axis parameters)
-
+   //std::cout << y_axis << std::endl;
    if (y_axis < 0) // y boundaries
       y_axis = 0;
    else if (y_axis > 500)

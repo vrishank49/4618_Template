@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
-
+#define DELTA_TIME 0.02
 
 class CGameObject
 {
